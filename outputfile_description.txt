@@ -1,0 +1,194 @@
+In this file is described the content of the output files from the DYKE-CODE_GEOTWINS: crack_shape_rXX_iXXXX.dat, xzSxxSxzSzz_rXX_iXXXX.dat, xzUxUz_rXX_iXXXX.dat, inplane_max_compr_stress.dat, inplane_min_compr_stress.dat, RUNINFO_XX.dat, XtZtDeE_XX.dat, XtZtPlitSigNSigT_XX.dat, M-FLUX_XX.dat.
+These output files will be generated in a folder called "output", that has to be located within the same directory where the DYKE-SIMULATION_GEOTWINS is executed (here you can find them in RUNS/TEST_01/output). The "output" folder must not contain any output file when running the DYKE-SIMULATION_GEOTWINS (cannot over-write output files) 
+
+*******************************************************************************************************************
+** Note about the input/output units.                                                                            **
+** Providing input parameters in [km] and [MPa] or [m] and [kPa], will affect the units of the output files:     **
+** The output coordinates (x,z) will be in [km] or [m] respectively;                                             **
+** The output stress fields will be in [MPa] or [kPa] respectively;                                              **
+** The output displacement fields, dislocation opening (Ut), and slip (Ub) are given in [m] or [mm] respectively **
+*******************************************************************************************************************
+
+*******************************************************************************************************************
+Additional note: The output files crack_shape_rXX_iXXXX.dat, xzSxxSxzSzz_rXX_iXXXX.dat, xzUxUz_rXX_iXXXX.dat are printed out at the beginning of the simulation (iteration number 0 of the propagation procedure), at the end of the simulation (last iteration step before the program stops), and at prescribed depths given as input (see Dz_snap in inputfile_description.txt).
+The output files inplane_max_compr_stress.dat and inplane_min_compr_stress.dat are printed at the beginning of the simulation.
+The other output files (RUNINFO_XX.dat, XtZtDeE_XX.dat, XtZtDELTA_XX.dat, XtZtDELTAINF_XX.dat) contains parameters that are computed and printed at each propagation step of the simulation. 
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: crack_shape_rXX_iXXXX.dat
+*******************************************************************************************************************
+(x,z) coordinates of the points for drawing the shape of the crack (in [km] or [m] depending on input units). x-axis is horizontal rightwards, z-axis vertical downwards.
+Contains (2*n_dis+2) lines (2 points for each dislocation element plus the edges of the crack, n_dis is the number of dislocation elements), and 2 columns (x and z values). Opening and shear of the crack are exaggerated by the "scaling factor" (scl) given in the input file.
+rXX is the fluid-filled crack number (from 1 to "n_cracks", given in input_BE.dat)
+iXXXX is the simulation step at which the output file is printed.
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: xzSxxSxzSzz_rXX_iXXXX.dat
+*******************************************************************************************************************
+Stress field induced by the crack in the simulation domain (in [MPa] or [kPa] depending on input units). In order to obtain the total stress, the stress induced by the crack should be superposed (added) to the initial stress (as given in the input stress file) and the lithostatic pressure.
+Contains n_pnt*n_pnt lines ("n_pnt" defined in input_field.dat) and 5 columns.
+In each line are printed the coordinates (x,z) for the point where the stress is computed, and the stress components Sxx, Sxz, and Szz.
+If "crackRF_output" in input_field.dat is .false.: z-axis vertical downwards, x-axis is horizontal rightwards;
+If "crackRF_output" in input_field.dat is .true.:  z-axis is parallel to the average dip angle of the crack, x-axis is perpendicular rightwards;
+rXX is the fluid-filled crack number (from 1 to "n_cracks", given in input_BE.dat)
+iXXXX is the simulation step at which the output file is printed.
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: xzUxUz_rXX_iXXXX.dat
+*******************************************************************************************************************
+Displacement field induced by the crack in the simulation domain (in [m] or [mm] depending on input units). z-axis vertical downwards, x-axis is horizontal rightwards;
+Contains n_pnt*n_pnt lines ("n_pnt" defined in input_field.dat) and 4 columns.
+In each line are printed the coordinates (x,z) for the point where the displacement is computed, and the displacement components Ux and Uz.
+rXX is the fluid-filled crack number (from 1 to "n_cracks", given in input_BE.dat)
+iXXXX is the simulation step at which the output file is printed.
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: zPlit.dat
+*******************************************************************************************************************
+Lithostatic pressure profile with depth
+It has the same spatial resolution (along z) as the input stress file, and 2 columns.
+1 - z, depth, varying in the elastic domain defined by the background stress field file.
+2 - Lithostatic pressure value (isotropic)
+IMPORTANT NOTE: zPlit.dat will be an empty file if the input stress field is null (which is if the input stress components are assigned to zero at the boundaries of the stress domain).
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: inplane_max_compr_stress.dat / inplane_min_compr_stress.dat
+*******************************************************************************************************************
+Direction of principal stress (max and min compression respectively)
+Contains 5 columns:
+1 - x coordinate for the stress direction calculation
+2 - z coordinates
+3 - max or min compressive direction, in degrees from the vertical and positive counterclockwise
+4 - max or min eigenvalue
+5 - difference between max and min eigenvalues
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: RUNINFO_XX.dat
+*******************************************************************************************************************
+Contains several input/output parameters which are printed at each iteration of the simulation. XX stands again for the crack number (from 1 to "n_cracks" given in the input file)
+The parameters in this file are listed below:
+
+#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+ n_dis_input  -> number of elementary dislocations given as input
+ A0           -> cross sectional area given as input (at vanishing confining pressure)
+ U            -> gravitational energy associated with the initial crack emplacement
+ W_r          -> strain energy associated with rock elastic deformation at initial crack emplacement 
+ W_f          -> strain energy associated with fluid compression at initial crack emplacement
+ Etot         -> total energy (sum of the three above) associated with the initial crack emplacement
+ n_dis output -> number of dislocation elements after solving the crack problem (computing the opening and shear along the crack). Must be less or equal to n_dis_input because dislocations (at the crack "tail") which display a negative opening are erased.
+ A            -> cross sectional area of the crack after solving the crack problem
+ delta_in     -> initial dip angle of the crack (as defined in the input file) in degrees counterclockwise from vertical     
+ x_start      -> x coordinate of the crack tip as given in the input file
+ z_start      -> z coordinate of the crack tip as given in the input file
+ OverP_av     -> average crack overpressure [KPa] if input is in [m] ([MPa] if input is in [km])
+ OverP_max    -> maximum crack overpressure [KPa] if input is in [m] ([MPa] if input is in [km])
+ ITER         -> simulation step (from here until the next ITER, the values of parameters will refer to this iteration number)
+ --------------------------------------------------
+ ** TEST DIRECTIONS OF PROPAGATION **              
+ --------------------------------------------------
+here the values of the following parameters are given for each of the direction of propagation which are tested:
+ U, W_r, W_f, Etot -> as described above
+ delta             -> dip angle of the crack tip 
+ n_dis             -> current number of dislocation 
+ esc_dir           -> logical T/F parameter defining whether or not the crack will propagate further in that direction
+ --------------------------------------------------
+from here on the iteration will continue in the direction selected according to the max energy release (obtained by subtracting the total energy Etot associated with the propagation in each direction, to the energy Etot associated with the previous iteration)
+ 
+ n_dis      -> number of dislocation elements
+ DeE        -> total energy released by propagating in the selected direction     
+ delta      -> dip angle of the crack tip
+ Plit (XX)  -> lithostatic pressure acting at the element XX of the BE crack     
+ x0z0(1,1)  -> x coordinates of the tail of the crack (x of the center of the dislocation element number 1)
+ x0z0(1,2)  -> z coordinates of the tail of the crack (z of the center of the dislocation element number 1)
+ A_iter     -> cross sectional area of the crack at the current ITER
+ x_top      -> x coordinate of the tip of the crack
+ z_top      -> z coordinate of the tip of the crack 
+ OverP_av   -> average overpressure
+ Ut_max     -> maximum opening of the crack
+ Ut_last_el -> opening of the lowermost element of the crack (crack tail), which is the element number 1
+ Ub_max     -> maximum shear on the crack
+ Ub_last_el -> shear of the lowermost element of the crack (crack tail), which is the element number 1
+#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: XtZtDeE_XX.dat
+*******************************************************************************************************************
+crack path and energy release associated with each iteration step of the crack number XX
+Contains N+n_dis_out lines, and 3 columns
+where n_dis_out is the number of dislocations when iteration 1 starts (equal or less the number of dislocations given as input)
+N is the total number of crack propagation steps (see also PROP_STEP in the description of the output file "M-FLUX_XX.dat").
+
+In the first n_dis_out lines the 3 columns contains:
+x and z coordinates of the dislocation elements of the crack at iteration zero, and a constant 0 value in the 3rd column
+
+At lines from n_dis_out+1 to N_ITER the 3 columns contains:
+x and z coordinates of the uppermost dislocation element (crack tip), and the energy released for propagation at that iteration.
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
+*******************************************************************************************************************
+FILE: XtZtPlitSigNSigT_XX.dat
+*******************************************************************************************************************
+Lithostatic pressure, normal stress and shear stress acting at the tip element of the BE crack along the propagation path
+Contains N lines, and 5 columns, where N is the total number of "crack propagation steps" (see also PROP_STEP in the description of the outpufile "M-FLUX_XX.dat").
+1 - x coordinate of the center of the uppermost dislocation element (crack tip)
+2 - z coordinate of the center of the uppermost dislocation element (crack tip)
+3 - Lithostatic pressure acting at depth z (isotropic)
+4 - Normal stress component (with respect to the dislocation element) of the background stress field acting in x,z (do not account for the lithostatic pressure, only the input stress file and the horizontal/vertical stress/stress-gradients defined in the input file input_BE.dat)
+5 - Shear stress component (with respect to the dislocation element) of the background stress field acting in x,z (input stress file plus the horizontal/vertical stress/stress-gradients defined in the input file input_BE.dat)
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+*******************************************************************************************************************
+FILE: M-FLUX_XX.dat
+*******************************************************************************************************************
+Contains several input/output parameters related with the crack propagation procedure, in particular the cross sectional area (2D volume) at each propagation iteration, and wether the propagation condition is fulfilled or not, for such fluid "volume" and crack length.
+The parameters in this file (ordered by columns) are listed below:
+01 - ITER: "simulation steps". At each simulation step the crack either propagates (by adding a dislocation element, if the propagation condition is met), or increase the cross sectional area (2D volume), in order to increase the internal pressure and get closer to the propagation condition. 
+02 - PROP_STEP: is incremented each time a "simulation step" correspond to a "crack propagation step" (the crack propagation condition is met and one dislocation element is added at the crack tip) 
+03 - A0: fluid cross sectional area at vanishing lithostatic stress (2D fluid volume at atmospheric pressure)
+04 - A_iter: fluid cross sectional area at depth (actual crack cross sectional area)
+05 - rho_iter: actual fluid density accounting for fluid compressibility and confining pressure 
+06 - DeE: difference between energy release and energy threshold (fracture energy). If it is positive the crack propagates, if not A0 is increased by DeA0
+07 - n_dis: number of dislocation elements
+08 - DP: average overpressure within the fluid filled crack (average fluid pressure at depth)
+09 - Xt: x coordinates of the uppermost dislocation element (crack tip)
+10 - Zt: z coordinates of the uppermost dislocation element (crack tip)
+11 - PROP: [Y/N] Y indicates that at the current simulation step the propagation condition is met (DeE>0, n_dis incremented by 1, A0 not incremented); N indicates that the propagation condition is not met (DeE<0, n_dis not incremented, A0 incremented by DeA0).
+*******************************************************************************************************************
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+
