@@ -1,0 +1,35 @@
+Input parameters for the boundary element code.
+MU1 / NU1 / rhoR1                                 (Rigidity [MPa or kPa], Poisson ratio, density of lower layer [kg/dm^3], respectively) 
+10.D3   0.3D0   2.6D0
+MU2 / NU2 / rhoR2                                 (Rigidity [MPa or kPa], Poisson ratio, density of upper layer [kg/dm^3], respectively)
+0.D0  0.D0  0.D0
+z_dns / z_ref                                     (z of density transition [km or m], z at which lithostatic stress vanishes [km or m], respectively)
+0.D0	0.D0
+rhoM / K                                          (density of the fluid [kg/dm^3], bulk modulus of the fluid [MPa] or [kPa])
+1.D0   10.D4
+SigXX / SigZZ / mx_SXX / mz_SXX / mx_SZZ / mz_SZZ (parameters defining the differential stress gratients for SigXX and SigZZ along x and z directions)
+0.D0,   0.D0,   0.D0,    8.2D0,   0.D0,    0.D0 
+n_cracks                                          (number of cracks for a single simulation)
+1
+X_start, Z_start, A0,   DeA0,  delta0             (coordinates of crack tips [km] or [m], initial cross sectional area [km^2] or [m^2], areal increment [percent, between 0 and 1]. Provide a number "n_cracks" of [X_start, Z_start, A0, DeA0, delta0])
+0.D0     2.55D0   2.1D-9 0.005   0.D0
+n_dis / Hd0                                       (number of dislocations, length of dislocation elements [km] or [m])
+1	0.001D0
+delta_optimal                                     (delta_optimal=.true. the crack will be optimally oriented for tensile opening, .false. the dip angle of the crack will be red as delta0 [degrees] from veritical, positive counterclockwise)
+.false.
+n_iter                                            (maximum number of "simulation steps")
+10000
+n_dir / alfa                                      (number of direction of propagation that will be tested at each iteration step, angle between them [degrees])
+3	1.D0
+x_stop_min / x_stop_max / z_stop                  (Propagation domain [km] or [m])
+-10.D0       10.D0        2.4D0
+E_prop                                            (energy threshold for crack propagation [MPa*m] or [kPa*mm])
+6.D-2
+
+*******************************************************************************************************************
+** Note about the input/output units.                                                                            **
+** Providing input parameters in [km] and [MPa] or [m] and [kPa], will affect the units of the output files:     **
+** The output coordinates (x,z) will be in [km] or [m] respectively;                                             **
+** The output stress fields will be in [MPa] or [kPa] respectively;                                              **
+** The output displacement fields, dislocation opening (Ut), and slip (Ub) are given in [m] or [mm] respectively **
+*******************************************************************************************************************
