@@ -22,7 +22,7 @@ This will generate the executable file “DYKE-SIMULATION_GEOTWINS” in the sub
 This will produce the output files in the folder “output”. Please refer to the
 “outputfile_description.txt” for a description of the outputs.
 
-3) Description of the content of the directory “GEOTWINS-T2.1_DYKE-CODE”.
+3) Description of the content of the repository “GEOTWINS-T2.1_DYKE-CODE”.
 
 - inputfile_description.txt and outputfile_description.txt: These files contain the description of the input-files needed to run the DYKE-SIMULATION_GEOTWINS executable file, and the description of the output-files generated the DYKE-SIMULATION_GEOTWINS.
 
